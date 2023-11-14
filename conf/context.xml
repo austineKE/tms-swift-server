@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+      <context:component-scan base-package="co.sys.procurement"/>
+
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="file:./conf/application.properties"/>
+    </bean>
+
+    <bean id="userDetailDatasource" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="jdbcUrl" value="${spring.datasource.url}"/>
+        <property name="username" value="${spring.datasource.username}"/>
+        <property name="password" value="${spring.datasource.password}"/>
+        <property name="driverClassName" value="${spring.datasource.driver-class-name}"/>
+    </bean>
+
+    <bean id="procurementDatasource" class="com.zaxxer.hikari.HikariDataSource">
+        <property name="jdbcUrl" value="${proc.datasource.url}"/>
+        <property name="username" value="${proc.datasource.username}"/>
+        <property name="password" value="${proc.datasource.password}"/>
+        <property name="driverClassName" value="${proc.datasource.driver-class-name}"/>
+    </bean>
+
+    <bean id="userDetailTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="userDetailDatasource"/>
+    </bean>
+
+    <bean id="procurementTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="procurementDatasource"/>
+    </bean>
+
+    <bean id="queryDb" class="co.sys.procurement.tmsswiftserver.service.QueryService">
+        <property name="userJdbcTemplate" ref="userDetailTemplate"/>
+        <property name="procurementJdbcTemplate" ref="procurementTemplate"/>
+    </bean>
+</beans>
