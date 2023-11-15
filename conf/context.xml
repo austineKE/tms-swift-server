@@ -36,4 +36,21 @@
         <property name="userJdbcTemplate" ref="userDetailTemplate"/>
         <property name="procurementJdbcTemplate" ref="procurementTemplate"/>
     </bean>
+
+    <!-- a pooling based JMS provider -->
+    <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+    <property name="connectionFactory">
+        <bean class="org.apache.activemq.ActiveMQConnectionFactory">
+            <property name="brokerURL">
+                <value>tcp://AUSTINE:61616</value>
+            </property>
+        </bean>
+    </property>
+        <property name="expiryTimeout" value="1000"/>
+</bean>
+
+        <!-- Spring JMS Template -->
+<bean id="myJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <property name="connectionFactory" ref="jmsFactory"/>
+</bean>
 </beans>
