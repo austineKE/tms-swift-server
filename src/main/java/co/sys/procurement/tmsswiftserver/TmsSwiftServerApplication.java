@@ -29,12 +29,6 @@ public class TmsSwiftServerApplication{
 
 	public static void main(String[] args) {
 		applicationContext= SpringApplication.run(TmsSwiftServerApplication.class, args);
-		JmsTemplate jmsTemplate= (JmsTemplate) applicationContext.getBean("myJmsTemplate");
-		logger.info("Calling JmsTemplate.......");
-//		jmsTemplate.convertAndSend("mailbox", new Email("austinewamalwa18@gmail.com", "Hello JMS"));
-		jmsTemplate.convertAndSend("austinewamalwa18@gmail.com", "Hello JMS");
-		jmsTemplate.convertAndSend("austinewamalwa18@gmail.com", "Welcome to activemq implementation");
-		logger.info("Finished calling JmsTemplate.......");
 	}
 
 }

@@ -3,7 +3,10 @@ package co.sys.procurement.tmsswiftserver.system.impl;
 import co.sys.procurement.tmsswiftserver.constants.ResponseMessage;
 import co.sys.procurement.tmsswiftserver.dto.BillingDto;
 import co.sys.procurement.tmsswiftserver.dto.ResponseDto;
+import co.sys.procurement.tmsswiftserver.library.impl.JmsNotificationService;
 import co.sys.procurement.tmsswiftserver.model.Project;
+import co.sys.procurement.tmsswiftserver.model.User;
+import co.sys.procurement.tmsswiftserver.service.SwiftHandlerService;
 import co.sys.procurement.tmsswiftserver.service.impl.ProjectImplService;
 import co.sys.procurement.tmsswiftserver.service.impl.TmsBillingServiceImpl;
 import co.sys.procurement.tmsswiftserver.system.TNDSystem;
@@ -30,6 +33,9 @@ public class TNDSystemImpl implements TNDSystem {
 
     @Autowired
     private TmsBillingServiceImpl tmsBillingService;
+
+    @Autowired
+    private JmsNotificationService jmsNotificationService;
 
     @Override
     public ResponseDto processLogin(String request) {
@@ -126,7 +132,30 @@ public class TNDSystemImpl implements TNDSystem {
             return responseDto;
         }
         catch (Exception e){
-            logger.info("Errro occurred while saving project record {}", e);
+            logger.info("Error occurred while saving project record {}", e);
+        }
+        return null;
+    }
+
+    @Override
+    public ResponseDto processNotification(String request) {
+        try {
+            gson = new Gson();
+            ResponseDto responseDto = new ResponseDto();
+            User user = new User();
+            ResponseMessage responseMessage = new ResponseMessage();
+            JsonObject projectJson = JsonParser.parseString(request).getAsJsonObject();
+            JsonObject projectObject = projectJson.get("data").getAsJsonObject();
+            Map<String, Object> map = gson.fromJson(projectObject, new TypeToken<Map<String, Object>>() {
+            }.getType());
+            Project projectVal = new ObjectMapper().convertValue(map, Project.class);
+            responseDto.setCallbackId(UUID.randomUUID().toString());
+            jmsNotificationService.sendNotification(user.getEmail(), "Value being sent");
+            responseDto.setMessage(responseMessage.getResponseMessage().getProperty("project.saveError"));
+            return responseDto;
+        }
+        catch (Exception e){
+            logger.info("Error processing notification {}", e);
         }
         return null;
     }

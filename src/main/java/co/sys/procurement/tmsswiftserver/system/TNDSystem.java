@@ -9,4 +9,5 @@ public interface TNDSystem {
     ResponseDto processTermsAndCondition(String request);
     ResponseDto processPayment(String request);
     ResponseDto processTermsAndConditionsManually(String request);
+    ResponseDto processNotification(String request);
 }

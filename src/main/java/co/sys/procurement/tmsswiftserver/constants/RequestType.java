@@ -7,4 +7,5 @@ public interface RequestType {
    public static final String TERMSANDCONDITIONS="termsandconditions";
    public static final String DEPOSITTOESCROW="deposittoescrow";
    public static final String MANUALLYAGREEDTERMS="manuallyagreedterms";
+   public static final String NOTIFY = "notify";
 }

@@ -26,8 +26,13 @@ public class RequestController {
     private SwiftHandlerService swiftHandlerService;
 
     @PostMapping(value = "/ts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseDto> saveProject(@RequestBody String request) {
-        return new ResponseEntity<>(swiftHandlerService.processTsRequest(request), HttpStatus.OK);
+    public ResponseEntity<ResponseDto> serveCliRequest(@RequestBody String request) {
+        return new ResponseEntity<>(swiftHandlerService.processCliRequest(request), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/tq", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseDto> serveSupRequest(@RequestBody String request) {
+        return new ResponseEntity<>(swiftHandlerService.processSupRequest(request), HttpStatus.OK);
     }
 
 
