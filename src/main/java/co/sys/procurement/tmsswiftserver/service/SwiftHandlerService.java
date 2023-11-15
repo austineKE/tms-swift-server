@@ -35,6 +35,9 @@ public class SwiftHandlerService {
             case RequestType.DEPOSITTOESCROW:
                 responseDto=tndSystem.processPayment(request);
                 break;
+            case RequestType.MANUALLYAGREEDTERMS:
+                responseDto=tndSystem.processTermsAndConditionsManually(request);
+                break;
         }
         return responseDto;
     }

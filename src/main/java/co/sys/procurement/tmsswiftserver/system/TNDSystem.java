@@ -8,4 +8,5 @@ public interface TNDSystem {
     ResponseDto processSwiftProject(String request);
     ResponseDto processTermsAndCondition(String request);
     ResponseDto processPayment(String request);
+    ResponseDto processTermsAndConditionsManually(String request);
 }

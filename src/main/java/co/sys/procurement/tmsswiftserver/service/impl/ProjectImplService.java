@@ -46,5 +46,17 @@ public class ProjectImplService implements ProjectService {
         return null;
     }
 
+    @Override
+    public String updateConditionsManually(Project project) {
+        String updateTermsAndConditions="UPDATE project set termsAgreedManually=1 where id=?";
+        try{
+            queryService.getProcurementJdbcTemplate().update(updateTermsAndConditions, project.getId());
+        }
+        catch (Exception e){
+            logger.error("Error while updating terms and conditions {}", e);
+        }
+        return null;
+    }
+
 
 }

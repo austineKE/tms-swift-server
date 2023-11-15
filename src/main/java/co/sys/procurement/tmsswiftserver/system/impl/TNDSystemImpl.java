@@ -109,4 +109,25 @@ public class TNDSystemImpl implements TNDSystem {
         }
         return null;
     }
+
+    @Override
+    public ResponseDto processTermsAndConditionsManually(String request) {
+        try {
+            gson=new Gson();
+            ResponseDto responseDto=new ResponseDto();
+            ResponseMessage responseMessage=new ResponseMessage();
+            JsonObject projectJson= JsonParser.parseString(request).getAsJsonObject();
+            JsonObject projectObject= projectJson.get("data").getAsJsonObject();
+            Map<String, Object> map = gson.fromJson(projectObject, new TypeToken<Map<String, Object>>() {}.getType());
+            Project projectVal = new ObjectMapper().convertValue(map, Project.class);
+            responseDto.setCallbackId(UUID.randomUUID().toString());
+            projectImplService.updateConditionsManually(projectVal);
+            responseDto.setMessage(responseMessage.getResponseMessage().getProperty("project.saveError"));
+            return responseDto;
+        }
+        catch (Exception e){
+            logger.info("Errro occurred while saving project record {}", e);
+        }
+        return null;
+    }
 }
