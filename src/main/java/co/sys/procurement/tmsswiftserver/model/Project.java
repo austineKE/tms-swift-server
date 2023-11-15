@@ -2,9 +2,9 @@ package co.sys.procurement.tmsswiftserver.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "project")
@@ -13,6 +13,8 @@ public class Project {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column(name = "project_srn")
+    private BigInteger srn;
     @Column(name = "projectname")
     private String nameOfProject;
     @Column(name = "projectcode")
@@ -71,6 +73,18 @@ public class Project {
 
     public void setTermsAndCondition(String termsAndCondition) {
         this.termsAndCondition = termsAndCondition;
+    }
+
+    public BigInteger getSrn() {
+        return srn;
+    }
+
+    public void setSrn(BigInteger srn) {
+        this.srn = srn;
+    }
+
+    public String getTermsAndCondition() {
+        return termsAndCondition;
     }
 
     @Override

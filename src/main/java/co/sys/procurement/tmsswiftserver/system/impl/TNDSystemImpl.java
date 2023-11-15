@@ -3,9 +3,11 @@ package co.sys.procurement.tmsswiftserver.system.impl;
 import co.sys.procurement.tmsswiftserver.constants.ResponseMessage;
 import co.sys.procurement.tmsswiftserver.dto.BillingDto;
 import co.sys.procurement.tmsswiftserver.dto.ResponseDto;
+import co.sys.procurement.tmsswiftserver.dto.SupplierQuotationDto;
 import co.sys.procurement.tmsswiftserver.library.impl.JmsNotificationService;
 import co.sys.procurement.tmsswiftserver.model.Project;
 import co.sys.procurement.tmsswiftserver.model.User;
+import co.sys.procurement.tmsswiftserver.service.SupplierService;
 import co.sys.procurement.tmsswiftserver.service.SwiftHandlerService;
 import co.sys.procurement.tmsswiftserver.service.impl.ProjectImplService;
 import co.sys.procurement.tmsswiftserver.service.impl.TmsBillingServiceImpl;
@@ -20,6 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
@@ -37,6 +43,8 @@ public class TNDSystemImpl implements TNDSystem {
     @Autowired
     private JmsNotificationService jmsNotificationService;
 
+    @Autowired
+    private SupplierService supplierService;
     @Override
     public ResponseDto processLogin(String request) {
         return null;
@@ -158,6 +166,28 @@ public class TNDSystemImpl implements TNDSystem {
         catch (Exception e){
             logger.info("Error processing notification {}", e);
         }
+        return null;
+    }
+
+    @Override
+    public ResponseDto processSwiftSupplier(String request) {
+        try {
+        gson = new Gson();
+        ResponseDto responseDto = new ResponseDto();
+        ResponseMessage responseMessage = new ResponseMessage();
+        JsonObject projectJson = JsonParser.parseString(request).getAsJsonObject();
+        JsonObject projectObject = projectJson.get("data").getAsJsonObject();
+        Map<String, Object> map = gson.fromJson(projectObject, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        SupplierQuotationDto supplierQuotationDto = new ObjectMapper().convertValue(map, SupplierQuotationDto.class);
+        supplierService.saveQuotation(supplierQuotationDto);
+        responseDto.setCallbackId(UUID.randomUUID().toString());
+        responseDto.setMessage(responseMessage.getResponseMessage().getProperty("project.saveError"));
+        return responseDto;
+    }
+        catch (Exception e){
+        logger.info("Error processing notification {}", e);
+    }
         return null;
     }
 }

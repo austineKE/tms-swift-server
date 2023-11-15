@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SwiftHandlerService {
     @Autowired
-    private ProjectImplService projectImplService;
-    @Autowired
     private TNDSystemImpl tndSystem;
 
     public ResponseDto processCliRequest(String request) {
@@ -27,7 +25,7 @@ public class SwiftHandlerService {
         JsonObject jsonAsRequest= JsonParser.parseString(request).getAsJsonObject();
         String requestType=jsonAsRequest.get("requestType").getAsString();
         switch (requestType){
-            case RequestType.QUOTATION:
+            case RequestType.PROJECT:
                 responseDto=tndSystem.processSwiftProject(request);
                 break;
             case RequestType.TERMSANDCONDITIONS:
@@ -57,7 +55,7 @@ public class SwiftHandlerService {
         String requestType=jsonAsRequest.get("requestType").getAsString();
         switch (requestType){
             case RequestType.QUOTATION:
-                responseDto=tndSystem.processSwiftProject(request);
+                responseDto=tndSystem.processSwiftSupplier(request);
                 break;
             case RequestType.TERMSANDCONDITIONS:
                 responseDto=tndSystem.processTermsAndCondition(request);
