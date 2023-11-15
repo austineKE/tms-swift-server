@@ -1,7 +1,6 @@
 package co.sys.procurement.tmsswiftserver;
 
 import co.sys.procurement.tmsswiftserver.dto.Email;
-import co.sys.procurement.tmsswiftserver.library.impl.JmsReceiver;
 import co.sys.procurement.tmsswiftserver.service.impl.ProjectImplService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ public class TmsSwiftServerApplication{
 	private static ConfigurableApplicationContext applicationContext;
 	@Autowired
 	private ProjectImplService projectImplService;
-	private JmsReceiver jmsReceiver;
 
 	public static void main(String[] args) {
 		applicationContext= SpringApplication.run(TmsSwiftServerApplication.class, args);

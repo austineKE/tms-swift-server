@@ -143,6 +143,7 @@ public class TNDSystemImpl implements TNDSystem {
             gson = new Gson();
             ResponseDto responseDto = new ResponseDto();
             User user = new User();
+            user.setEmail("austinewamalwa@gmail.com");
             ResponseMessage responseMessage = new ResponseMessage();
             JsonObject projectJson = JsonParser.parseString(request).getAsJsonObject();
             JsonObject projectObject = projectJson.get("data").getAsJsonObject();

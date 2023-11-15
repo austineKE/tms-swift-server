@@ -4,6 +4,7 @@ import co.sys.procurement.tmsswiftserver.dto.Email;
 import co.sys.procurement.tmsswiftserver.dto.ResponseDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,8 @@ import javax.jms.ConnectionFactory;
 @Component
 public class JmsNotificationService {
     private Logger logger= LoggerFactory.getLogger(this.getClass().getName());
-    private static ConfigurableApplicationContext applicationContext;
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
 
     public ResponseDto sendNotification(String to, String body){
         try {
